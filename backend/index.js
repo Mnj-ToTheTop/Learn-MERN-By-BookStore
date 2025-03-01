@@ -8,6 +8,8 @@ const app = express();
 
 // Middle-ware
 app.use(express.json());
+
+//app.use(cors()) => allows all requests from everywhere.
 app.use(
   cors({
     origin: "http://localhost:5173/",
