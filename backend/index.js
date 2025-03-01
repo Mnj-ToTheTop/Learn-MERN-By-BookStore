@@ -6,6 +6,7 @@ import { bookModel } from "./models/bookModel.js";
 const app = express();
 
 app.use(express.json());
+
 app.get("/", (req, res) => {
   return res
     .status(234)
@@ -15,21 +16,15 @@ app.get("/", (req, res) => {
 
 app.post("/books", async (req, res) => {
   try {
-    if (
-      !req.body.title ||
-      !req.body.author ||
-      !req.body.publication_year ||
-      !req.body.genre
-    ) {
+    if (!req.body.name || !req.body.author || !req.body.genre) {
       return res
         .status(500)
         .send({ message: "Provide all the required data." });
     }
 
     const newBook = {
-      title: req.body.title,
+      name: req.body.name,
       author: req.body.author,
-      publication_year: req.body.publication_year,
       genre: req.body.genre,
     };
 
@@ -53,6 +48,17 @@ app.get("/books", async (req, res) => {
   } catch (error) {
     console.log(error.message);
     return res.status(500).send({ message: "error" });
+  }
+});
+
+app.get("/OneBook/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const book = await bookModel.findById(id);
+    console.log(id);
+    return res.status(200).json(book);
+  } catch (error) {
+    res.status(400).send("Error");
   }
 });
 
